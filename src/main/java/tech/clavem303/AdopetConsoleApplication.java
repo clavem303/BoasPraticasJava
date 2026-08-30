@@ -1,4 +1,4 @@
-package br.com.alura;
+package tech.clavem303;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
