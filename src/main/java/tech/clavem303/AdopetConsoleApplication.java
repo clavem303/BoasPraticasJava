@@ -1,5 +1,6 @@
 package tech.clavem303;
 
+import tech.clavem303.client.ClientHttpConfiguration;
 import tech.clavem303.service.PetService;
 import tech.clavem303.service.ShelterService;
 import java.util.Scanner;
@@ -7,8 +8,9 @@ import java.util.Scanner;
 public class AdopetConsoleApplication {
 
     public static void main(String[] args) {
-        ShelterService shelterService = new ShelterService();
-        PetService petService = new PetService();
+        ClientHttpConfiguration client = new ClientHttpConfiguration();
+        ShelterService shelterService = new ShelterService(client);
+        PetService petService = new PetService(client);
 
         System.out.println("##### BOAS VINDAS AO SISTEMA ADOPET CONSOLE #####");
         try {
