@@ -1,13 +1,13 @@
 package tech.clavem303.service;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import tech.clavem303.client.ClientHttpConfiguration;
+import tech.clavem303.domain.Shelter;
+import tools.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.net.http.HttpResponse;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
 
 public class ShelterService {
@@ -22,31 +22,30 @@ public class ShelterService {
         String uri = "http://localhost:8080/abrigos";
         HttpResponse<String> response = client.triggerGetRequest(uri);
         String responseBody = response.body();
-        JsonArray jsonArray = JsonParser.parseString(responseBody).getAsJsonArray();
+
+        Shelter[] shelters = new ObjectMapper().readValue(responseBody, Shelter[].class);
+        List<Shelter> shelterList = Arrays.stream(shelters).toList();
+
         System.out.println("Abrigos cadastrados:");
-        for (JsonElement element : jsonArray) {
-            JsonObject jsonObject = element.getAsJsonObject();
-            long id = jsonObject.get("id").getAsLong();
-            String nome = jsonObject.get("nome").getAsString();
-            System.out.println(id +" - " +nome);
+        for (Shelter shelter : shelterList) {
+            long id = shelter.getId();
+            String name = shelter.getName();
+            System.out.println(id +" - " +name);
         }
     }
 
     public void registerShelter() throws IOException, InterruptedException {
         System.out.println("Digite o nome do abrigo:");
-        String nome = new Scanner(System.in).nextLine();
+        String name = new Scanner(System.in).nextLine();
         System.out.println("Digite o telefone do abrigo:");
-        String telefone = new Scanner(System.in).nextLine();
+        String phoneNumber = new Scanner(System.in).nextLine();
         System.out.println("Digite o email do abrigo:");
         String email = new Scanner(System.in).nextLine();
 
-        JsonObject json = new JsonObject();
-        json.addProperty("nome", nome);
-        json.addProperty("telefone", telefone);
-        json.addProperty("email", email);
+        Shelter shelter = new Shelter(name, phoneNumber, email);
 
         String uri = "http://localhost:8080/abrigos";
-        HttpResponse<String> response = client.triggerPostRequest(uri, json);
+        HttpResponse<String> response = client.triggerPostRequest(uri, shelter);
         int statusCode = response.statusCode();
         String responseBody = response.body();
         if (statusCode == 200) {
