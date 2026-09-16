@@ -18,14 +18,14 @@ import static org.mockito.Mockito.when;
 public class ShelterServiceTest {
 
     private final ClientHttpConfiguration client =
-            mock(ClientHttpConfiguration.class);
+            mock(ClientHttpConfiguration.class); //Simula a configuração do cliente HTTP.
 
     private final ShelterService shelterService =
-            new ShelterService(client);
+            new ShelterService(client); // Instancia o serviço de abrigos.
 
     @SuppressWarnings("unchecked")
     private final HttpResponse<String> response =
-            mock(HttpResponse.class);
+            mock(HttpResponse.class); // Simula a resposta HTTP.
 
     private final PrintStream saidaOriginal = System.out;
 
